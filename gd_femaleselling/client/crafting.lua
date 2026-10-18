@@ -1,18 +1,18 @@
 -- ox_target setup for crafting table
 CreateThread(function()
     -- Initial blip check
-    GdFemaleSelling.updateShopBlip()
+    GdSellTech.updateShopBlip()
 
     exports.ox_target:addModel(Config.CraftingObject, {
         {
-            name = "female_crafting",
+            name = "selltech_crafting",
             icon = "fa-solid fa-wand-sparkles",
-            label = "Craft Female Items",
+            label = "Craft Consoles",
             onSelect = function(data)
-                GdFemaleSelling.openCraftingMenu()
+                GdSellTech.openCraftingMenu()
             end,
             canInteract = function()
-                return GdFemaleSelling.isFemale()
+                return true
             end
         },
         {
@@ -32,7 +32,7 @@ CreateThread(function()
                         disable = { move = true, car = true, mouse = false, combat = true },
                         anim = { dict = "pickup_object", clip = "pickup_low", flag = 16 }
                     }) then
-                        TriggerServerEvent("femalecraft:server:pickupTable", NetworkGetNetworkIdFromEntity(entity))
+                        TriggerServerEvent("selltech:server:pickupTable", NetworkGetNetworkIdFromEntity(entity))
                     end
                     RemoveAnimDict("pickup_object")
                 end
@@ -42,25 +42,16 @@ CreateThread(function()
 end)
 
 -- Use item to place table
-RegisterNetEvent("femalecraft:client:placeTable", function()
+RegisterNetEvent("selltech:client:placeTable", function()
     local playerPed = PlayerPedId()
-    GdFemaleSelling.debugLog("placeTable event triggered")
+    GdSellTech.debugLog("placeTable event triggered")
     
-    if not GdFemaleSelling.isFemale() then
-        lib.notify({
-            title = "Female Only",
-            description = "Only females can place this table!",
-            type = "error"
-        })
-        return
-    end
-
     local playerCoords = GetEntityCoords(playerPed)
     local forward = GetEntityForwardVector(playerPed)
     local spawnCoords = playerCoords + (forward * 1.5)
     local heading = GetEntityHeading(playerPed)
 
-    GdFemaleSelling.debugLog("Requesting model: " .. Config.CraftingObject)
+    GdSellTech.debugLog("Requesting model: " .. Config.CraftingObject)
     
     if not lib.requestModel(Config.CraftingObject, 10000) then
         lib.notify({
@@ -94,10 +85,10 @@ RegisterNetEvent("femalecraft:client:placeTable", function()
             SetNetworkIdCanMigrate(netId, true)
             Entity(obj).state.isCraftingTable = true
 
-            TriggerServerEvent("femalecraft:server:confirmPlacement")
-            GdFemaleSelling.debugLog("Table placed successfully. NetID: " .. netId)
+            TriggerServerEvent("selltech:server:confirmPlacement")
+            GdSellTech.debugLog("Table placed successfully. NetID: " .. netId)
         else
-            GdFemaleSelling.debugLog("FAILED to spawn table object. CreateObject returned nil.")
+            GdSellTech.debugLog("FAILED to spawn table object. CreateObject returned nil.")
             lib.notify({
                 title = "Error",
                 description = "Failed to spawn the object. Check F8 console.",

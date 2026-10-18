@@ -1,16 +1,16 @@
 -- Despawn seller
-RegisterNetEvent("femalecraft:client:despawnSeller", function()
-    if GdFemaleSelling.activeSeller then
-        local seller = GdFemaleSelling.activeSeller
-        GdFemaleSelling.activeSeller = nil -- Clear reference immediately so interaction stops
+RegisterNetEvent("selltech:client:despawnSellTech", function()
+    if GdSellTech.activeSellTech then
+        local seller = GdSellTech.activeSellTech
+        GdSellTech.activeSellTech = nil -- Clear reference immediately so interaction stops
         
-        GdFemaleSelling.debugLog("Seller transaction complete. Walking away before despawn.")
+        GdSellTech.debugLog("SellTech transaction complete. Walking away before despawn.")
         
         -- Remove ox_target interaction immediately
         exports.ox_target:removeLocalEntity(seller, "sell_items")
         
-        -- Update GdFemaleSelling.lastSellTime on successful transaction
-        GdFemaleSelling.lastSellTime = GetGameTimer()
+        -- Update GdSellTech.lastSellTime on successful transaction
+        GdSellTech.lastSellTime = GetGameTimer()
         
         -- Stop any current tasks and walk away
         ClearPedTasks(seller)
@@ -21,26 +21,26 @@ RegisterNetEvent("femalecraft:client:despawnSeller", function()
         SetTimeout(10000, function()
             if DoesEntityExist(seller) then
                 DeleteEntity(seller)
-                GdFemaleSelling.debugLog("Seller despawned successfully after walking away.")
+                GdSellTech.debugLog("SellTech despawned successfully after walking away.")
             end
         end)
     end
 end)
 
 -- Remove entity from client (called from server)
-RegisterNetEvent("femalecraft:client:removeTable", function(netId)
+RegisterNetEvent("selltech:client:removeTable", function(netId)
     if NetworkDoesNetworkIdExist(netId) then
         local entity = NetToObj(netId)
         if DoesEntityExist(entity) then
             DeleteEntity(entity)
-            GdFemaleSelling.debugLog("Table removed. NetID: " .. netId)
+            GdSellTech.debugLog("Table removed. NetID: " .. netId)
         end
     end
 end)
 
 -- Sell Process with custom Tailwind UI
 local function startSellingProcess()
-    if not GdFemaleSelling.activeSeller then return end
+    if not GdSellTech.activeSellTech then return end
     
     local ped = PlayerPedId()
     
@@ -62,7 +62,7 @@ local function startSellingProcess()
 
     if #sellableItems == 0 then
         lib.notify({
-            title = "Seller",
+            title = "SellTech",
             description = "You don't have any products to show them!",
             type = "error"
         })
@@ -81,7 +81,7 @@ RegisterNUICallback("selectItemToSell", function(data, cb)
     local itemName = data.itemName
     local ped = PlayerPedId()
     
-    if not GdFemaleSelling.activeSeller or not DoesEntityExist(GdFemaleSelling.activeSeller) then
+    if not GdSellTech.activeSellTech or not DoesEntityExist(GdSellTech.activeSellTech) then
         cb("error")
         return
     end
@@ -118,7 +118,7 @@ RegisterNUICallback("acceptOffer", function(data, cb)
     local itemName = data.itemName
     local ped = PlayerPedId()
     
-    if not GdFemaleSelling.activeSeller or not DoesEntityExist(GdFemaleSelling.activeSeller) then
+    if not GdSellTech.activeSellTech or not DoesEntityExist(GdSellTech.activeSellTech) then
         cb("error")
         return
     end
@@ -134,14 +134,14 @@ RegisterNUICallback("acceptOffer", function(data, cb)
     end
 
     -- Face each other
-    TaskTurnPedToFaceEntity(ped, GdFemaleSelling.activeSeller, 1000)
-    TaskTurnPedToFaceEntity(GdFemaleSelling.activeSeller, ped, 1000)
+    TaskTurnPedToFaceEntity(ped, GdSellTech.activeSellTech, 1000)
+    TaskTurnPedToFaceEntity(GdSellTech.activeSellTech, ped, 1000)
     Wait(1000)
 
     lib.requestAnimDict("mp_common")
     
     -- Make the buyer start animation
-    TaskPlayAnim(GdFemaleSelling.activeSeller, "mp_common", "givetake1_a", 8.0, -8.0, 3000, 49, 0, false, false, false)
+    TaskPlayAnim(GdSellTech.activeSellTech, "mp_common", "givetake1_a", 8.0, -8.0, 3000, 49, 0, false, false, false)
 
     if lib.progressCircle({
         duration = 3000,
@@ -156,10 +156,10 @@ RegisterNUICallback("acceptOffer", function(data, cb)
             flag = 49
         }
     }) then
-        TriggerServerEvent("femalecraft:server:sellItems", itemName, data.price)
+        TriggerServerEvent("selltech:server:sellItems", itemName, data.price)
     else
-        ClearPedTasks(GdFemaleSelling.activeSeller)
-        GdFemaleSelling.debugLog("Selling cancelled.")
+        ClearPedTasks(GdSellTech.activeSellTech)
+        GdSellTech.debugLog("Selling cancelled.")
     end
     RemoveAnimDict("mp_common")
     cb("ok")
@@ -167,12 +167,12 @@ end)
 
 RegisterNUICallback("declineOffer", function(_, cb)
     SetNuiFocus(false, false)
-    if GdFemaleSelling.activeSeller then
-        local seller = GdFemaleSelling.activeSeller
-        GdFemaleSelling.activeSeller = nil
+    if GdSellTech.activeSellTech then
+        local seller = GdSellTech.activeSellTech
+        GdSellTech.activeSellTech = nil
         
         -- Update cooldown after decline
-        GdFemaleSelling.lastSellTime = GetGameTimer()
+        GdSellTech.lastSellTime = GetGameTimer()
         
         -- Remove target immediately
         exports.ox_target:removeLocalEntity(seller, "sell_items")
@@ -181,7 +181,7 @@ RegisterNUICallback("declineOffer", function(_, cb)
         SetPedKeepTask(seller, true)
         TaskWanderStandard(seller, 10.0, 10)
         lib.notify({
-            title = "Seller",
+            title = "SellTech",
             description = "The buyer walked away disappointed.",
             type = "info"
         })
@@ -199,44 +199,39 @@ RegisterNUICallback("sellItem", function(data, cb)
 end)
 
 -- Command to spawn seller
-RegisterCommand("sellfemaleitems", function()
-    if GdFemaleSelling.isCalling then return end
+RegisterCommand("selltech", function()
+    if GdSellTech.isCalling then return end
     
     local currentTime = GetGameTimer()
     
     -- Check cooldown (Only after a completed/declined sale)
-    if GdFemaleSelling.lastSellTime ~= 0 and (currentTime - GdFemaleSelling.lastSellTime < (Config.SellCooldown or 60000)) then
-        local remaining = math.ceil(((Config.SellCooldown or 60000) - (currentTime - GdFemaleSelling.lastSellTime)) / 1000)
+    if GdSellTech.lastSellTime ~= 0 and (currentTime - GdSellTech.lastSellTime < (Config.SellCooldown or 60000)) then
+        local remaining = math.ceil(((Config.SellCooldown or 60000) - (currentTime - GdSellTech.lastSellTime)) / 1000)
         lib.notify({
-            title = "Cooldown",
+            title = "SellTech Cooldown",
             description = "You must wait " .. remaining .. "s before calling again.",
             type = "error"
         })
         return
     end
 
-    if not GdFemaleSelling.isFemale() then
-        GdFemaleSelling.debugLog("Male ped attempted to spawn seller.")
-        return
-    end
-
     -- Check if player has any sellable items before spawning
-    local hasItems = lib.callback.await("femalecraft:server:hasAnySellableItems", false)
+    local hasItems = lib.callback.await("selltech:server:hasAnySellableItems", false)
     if not hasItems then
         lib.notify({
-            title = "Seller",
+            title = "SellTech",
             description = "You don't have anything to sell!",
             type = "error"
         })
         return
     end
 
-    if GdFemaleSelling.activeSeller then
-        DeleteEntity(GdFemaleSelling.activeSeller)
-        GdFemaleSelling.activeSeller = nil
+    if GdSellTech.activeSellTech then
+        DeleteEntity(GdSellTech.activeSellTech)
+        GdSellTech.activeSellTech = nil
     end
 
-    GdFemaleSelling.isCalling = true
+    GdSellTech.isCalling = true
     local playerPed = PlayerPedId()
 
     -- Start phone call animation
@@ -265,24 +260,24 @@ RegisterCommand("sellfemaleitems", function()
         DeleteEntity(phoneObj)
         StopAnimTask(playerPed, "cellphone@", "cellphone_call_listen_base", 1.0)
         
-        GdFemaleSelling.isCalling = false
+        GdSellTech.isCalling = false
         local coords = GetEntityCoords(playerPed)
         local forward = GetEntityForwardVector(playerPed)
         local spawnPos = coords + (forward * 20.0) -- Spawn slightly further away for immersion
         local model = Config.SellerModels[math.random(#Config.SellerModels)]
 
         lib.requestModel(model)
-        GdFemaleSelling.activeSeller = CreatePed(0, joaat(model), spawnPos.x, spawnPos.y, spawnPos.z - 1.0, 0.0, true, false)
+        GdSellTech.activeSellTech = CreatePed(0, joaat(model), spawnPos.x, spawnPos.y, spawnPos.z - 1.0, 0.0, true, false)
         
-        SetEntityInvincible(GdFemaleSelling.activeSeller, true)
-        SetBlockingOfNonTemporaryEvents(GdFemaleSelling.activeSeller, true)
-        SetPedKeepTask(GdFemaleSelling.activeSeller, true)
+        SetEntityInvincible(GdSellTech.activeSellTech, true)
+        SetBlockingOfNonTemporaryEvents(GdSellTech.activeSellTech, true)
+        SetPedKeepTask(GdSellTech.activeSellTech, true)
         
         -- Improved arrival logic: Follow with dynamic distance
-        TaskFollowToOffsetOfEntity(GdFemaleSelling.activeSeller, playerPed, 0.0, 0.0, 0.0, 1.2, -1, 1.0, true)
-        SetPedKeepTask(GdFemaleSelling.activeSeller, true)
+        TaskFollowToOffsetOfEntity(GdSellTech.activeSellTech, playerPed, 0.0, 0.0, 0.0, 1.2, -1, 1.0, true)
+        SetPedKeepTask(GdSellTech.activeSellTech, true)
 
-        exports.ox_target:addLocalEntity(GdFemaleSelling.activeSeller, {
+        exports.ox_target:addLocalEntity(GdSellTech.activeSellTech, {
             {
                 name = "sell_items",
                 icon = "fa-solid fa-hand-holding-dollar",
@@ -293,14 +288,14 @@ RegisterCommand("sellfemaleitems", function()
             }
         })
 
-        GdFemaleSelling.debugLog("Seller spawned. Model: " .. model)
+        GdSellTech.debugLog("SellTech spawned. Model: " .. model)
 
         -- Auto despawn logic (walk away after 90 seconds if no interaction)
         SetTimeout(90000, function()
-            if GdFemaleSelling.activeSeller and DoesEntityExist(GdFemaleSelling.activeSeller) then
-                local seller = GdFemaleSelling.activeSeller
-                GdFemaleSelling.activeSeller = nil
-                GdFemaleSelling.debugLog("Seller session timed out. Walking away.")
+            if GdSellTech.activeSellTech and DoesEntityExist(GdSellTech.activeSellTech) then
+                local seller = GdSellTech.activeSellTech
+                GdSellTech.activeSellTech = nil
+                GdSellTech.debugLog("SellTech session timed out. Walking away.")
                 
                 -- Ensure target is removed
                 exports.ox_target:removeLocalEntity(seller, "sell_items")
@@ -317,42 +312,68 @@ RegisterCommand("sellfemaleitems", function()
         end)
     else
         -- Cancelled
-        GdFemaleSelling.isCalling = false
+        GdSellTech.isCalling = false
         DeleteEntity(phoneObj)
         StopAnimTask(playerPed, "cellphone@", "cellphone_call_listen_base", 1.0)
-        GdFemaleSelling.debugLog("Call cancelled.")
+        GdSellTech.debugLog("Call cancelled.")
     end
     
     RemoveAnimDict("cellphone@")
     SetModelAsNoLongerNeeded(phoneModel)
 end, false)
 
+RegisterCommand("stopselltech", function()
+    if GdSellTech.isCalling then
+        GdSellTech.isCalling = false
+    end
+
+    if not GdSellTech.activeSellTech then return end
+
+    local seller = GdSellTech.activeSellTech
+    GdSellTech.activeSellTech = nil
+    exports.ox_target:removeLocalEntity(seller, "sell_items")
+    ClearPedTasks(seller)
+    SetPedKeepTask(seller, true)
+    TaskWanderStandard(seller, 10.0, 10)
+    lib.notify({
+        title = "SellTech",
+        description = "The console buyer has been dismissed.",
+        type = "info"
+    })
+
+    SetTimeout(10000, function()
+        if DoesEntityExist(seller) then
+            DeleteEntity(seller)
+        end
+    end)
+end, false)
+
 -- Distance check for seller
 CreateThread(function()
     while true do
         Wait(1500)
-        if GdFemaleSelling.activeSeller and DoesEntityExist(GdFemaleSelling.activeSeller) then
+        if GdSellTech.activeSellTech and DoesEntityExist(GdSellTech.activeSellTech) then
             local playerPed = PlayerPedId()
             local playerCoords = GetEntityCoords(playerPed)
-            local sellerCoords = GetEntityCoords(GdFemaleSelling.activeSeller)
+            local sellerCoords = GetEntityCoords(GdSellTech.activeSellTech)
             local dist = #(playerCoords - sellerCoords)
             
             -- Keep ped moving towards player if they move away, but stop when close
             if dist > 3.0 and dist < 50.0 then
                 -- Check if ped is already following/moving
-                if GetEntitySpeed(GdFemaleSelling.activeSeller) < 0.2 then
-                    GdFemaleSelling.debugLog("Seller stopped too far, restarting follow.")
-                    TaskFollowToOffsetOfEntity(GdFemaleSelling.activeSeller, playerPed, 0.0, 0.0, 0.0, 1.2, -1, 1.0, true)
+                if GetEntitySpeed(GdSellTech.activeSellTech) < 0.2 then
+                    GdSellTech.debugLog("SellTech stopped too far, restarting follow.")
+                    TaskFollowToOffsetOfEntity(GdSellTech.activeSellTech, playerPed, 0.0, 0.0, 0.0, 1.2, -1, 1.0, true)
                 end
             elseif dist <= 3.0 then
                 -- Close enough, just face player
-                if GetEntitySpeed(GdFemaleSelling.activeSeller) < 0.1 then
-                    TaskTurnPedToFaceEntity(GdFemaleSelling.activeSeller, playerPed, 1000)
+                if GetEntitySpeed(GdSellTech.activeSellTech) < 0.1 then
+                    TaskTurnPedToFaceEntity(GdSellTech.activeSellTech, playerPed, 1000)
                 end
             elseif dist >= 50.0 then
-                GdFemaleSelling.debugLog("Seller lost (dist: " .. dist .. "), cleaning up.")
-                local seller = GdFemaleSelling.activeSeller
-                GdFemaleSelling.activeSeller = nil
+                GdSellTech.debugLog("SellTech lost (dist: " .. dist .. "), cleaning up.")
+                local seller = GdSellTech.activeSellTech
+                GdSellTech.activeSellTech = nil
                 exports.ox_target:removeLocalEntity(seller, "sell_items")
                 DeleteEntity(seller)
             end

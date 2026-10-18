@@ -8,7 +8,7 @@ local function hasItems(src, ingredients)
 end
 
 -- Check if player has any sellable items
-lib.callback.register("femalecraft:server:hasAnySellableItems", function(source)
+lib.callback.register("selltech:server:hasAnySellableItems", function(source)
     for itemName, _ in pairs(Config.SellItems) do
         local count = exports.ox_inventory:GetItemCount(source, itemName)
         if count > 0 then
@@ -19,7 +19,7 @@ lib.callback.register("femalecraft:server:hasAnySellableItems", function(source)
 end)
 
 -- Handle shop purchases
-RegisterNetEvent("femalecraft:server:buyItem", function(itemName, amount)
+RegisterNetEvent("selltech:server:buyItem", function(itemName, amount)
     local src = source
     local itemData = nil
     
@@ -40,20 +40,20 @@ RegisterNetEvent("femalecraft:server:buyItem", function(itemName, amount)
             exports.ox_inventory:RemoveItem(src, "money", totalPrice)
             exports.ox_inventory:AddItem(src, itemName, amount)
             TriggerClientEvent("ox_lib:notify", src, {
-                title = "Glamour Studio",
+                title = "SellTech",
                 description = "Purchased " .. amount .. "x " .. itemData.label,
                 type = "success"
             })
         else
             TriggerClientEvent("ox_lib:notify", src, {
-                title = "Glamour Studio",
+                title = "SellTech",
                 description = "You cannot carry this many items!",
                 type = "error"
             })
         end
     else
         TriggerClientEvent("ox_lib:notify", src, {
-            title = "Glamour Studio",
+            title = "SellTech",
             description = "You don't have enough money!",
             type = "error"
         })
@@ -63,35 +63,35 @@ end)
 -- Handle placing the table via item usage event
 AddEventHandler('ox_inventory:usedItem', function(playerId, name, slotId, metadata)
     if name == Config.CraftingItem then
-        TriggerClientEvent("femalecraft:client:placeTable", playerId)
+        TriggerClientEvent("selltech:client:placeTable", playerId)
     end
 end)
 
 -- Remove the item only after successful placement confirmation from client
-RegisterNetEvent("femalecraft:server:confirmPlacement", function()
+RegisterNetEvent("selltech:server:confirmPlacement", function()
     local src = source
     if not src then return end
     exports.ox_inventory:RemoveItem(src, Config.CraftingItem, 1)
 end)
 
 -- Handle picking up the table
-RegisterNetEvent("femalecraft:server:pickupTable", function(netId)
+RegisterNetEvent("selltech:server:pickupTable", function(netId)
     local src = source
     local entity = NetworkGetEntityFromNetworkId(netId)
     
     if DoesEntityExist(entity) then
         DeleteEntity(entity)
-        TriggerClientEvent("femalecraft:client:removeTable", -1, netId)
+        TriggerClientEvent("selltech:client:removeTable", -1, netId)
         exports.ox_inventory:AddItem(src, Config.CraftingItem, 1)
         TriggerClientEvent("ox_lib:notify", src, {
-            title = "Crafting Table",
+            title = "Console Workbench",
             description = "You picked up the crafting table.",
             type = "info"
         })
     end
 end)
 
-RegisterNetEvent("femalecraft:server:craft", function(itemName, amount)
+RegisterNetEvent("selltech:server:craft", function(itemName, amount)
     local src = source
     local craftData = nil
     amount = amount or 1
@@ -144,7 +144,7 @@ RegisterNetEvent("femalecraft:server:craft", function(itemName, amount)
     end
 end)
 
-RegisterNetEvent("femalecraft:server:sellItems", function(selectedItem, pricePerItem)
+RegisterNetEvent("selltech:server:sellItems", function(selectedItem, pricePerItem)
     local src = source
     local config = Config.SellItems[selectedItem]
     if not config then return end
@@ -164,9 +164,9 @@ RegisterNetEvent("femalecraft:server:sellItems", function(selectedItem, pricePer
             if exports.ox_inventory:RemoveItem(src, selectedItem, actualAmount) then
                 exports.ox_inventory:AddItem(src, "money", payout)
                 
-                TriggerClientEvent("femalecraft:client:despawnSeller", src)
+                TriggerClientEvent("selltech:client:despawnSellTech", src)
                 TriggerClientEvent("ox_lib:notify", src, {
-                    title = "Seller",
+                    title = "SellTech",
                     description = "Perfect! Here is $" .. payout .. " for the " .. actualAmount .. "x items.",
                     type = "success"
                 })
@@ -174,7 +174,7 @@ RegisterNetEvent("femalecraft:server:sellItems", function(selectedItem, pricePer
         end
     else
         TriggerClientEvent("ox_lib:notify", src, {
-            title = "Seller",
+            title = "SellTech",
             description = "You don't have that product on you anymore.",
             type = "error"
         })

@@ -1,134 +1,138 @@
-# Glamour Studio V2
+# SellTech V2
 
-A luxury standalone crafting and selling system for FiveM, designed for high-end cosmetic items. This resource features a custom Tailwind-powered UI and utilizes **ox_inventory**, **ox_lib**, and **ox_target**.
+SellTech is a standalone console crafting and street-selling system for FiveM. It keeps the existing portable table, user interface layout, interaction flow, and animations while replacing the previous cosmetics theme with console components and products. It uses **ox_inventory**, **ox_lib**, and **ox_target**.
 
 ## Features
-- **Studio Shop**: Purchase materials and equipment from a dedicated shop NPC.
-- **Luxury Crafting**: High-end NUI for creating professional cosmetics.
-- **Selling System**: Offer products to NPCs on the street with a custom "Offer/Accept/Decline" UI.
-- **Placement System**: Place your Makeup Station anywhere to start crafting.
-- **Gender Restricted**: Studio blip only visible to female characters.
+
+- **Console Supply Shop**: Buy electronic components and the portable Console Workbench from the shop NPC.
+- **Console Crafting**: Assemble finished consoles using the placed table.
+- **Street Selling**: Call an NPC buyer and sell crafted consoles through the existing Offer/Accept/Decline interface.
+- **All Player Models**: Female-only restrictions have been removed. Any player model can shop, place the table, craft, and sell.
+- **Existing Animations**: The phone call, table placement, crafting, pickup, and deal animations are unchanged.
 
 ## Requirements
+
 - [ox_inventory](https://github.com/overextended/ox_inventory)
 - [ox_lib](https://github.com/overextended/ox_lib)
 - [ox_target](https://github.com/overextended/ox_target)
 
 ## Installation
 
-1. Copy the `cs-femalesellingV2` folder into your resources directory.
-2. Add `ensure cs-femalesellingV2` to your `server.cfg`.
-3. Add the items below to your `ox_inventory/data/items.lua`.
-4. Ensure item images are placed in `ox_inventory/web/images/`.
+1. Copy the `gd_femaleselling` folder into your resources directory.
+2. Add `ensure gd_femaleselling` to `server.cfg`.
+3. Add the inventory items below to `ox_inventory/data/items.lua`.
+4. Add matching item images to `ox_inventory/web/images/` if your server uses custom images.
+5. Restart or refresh the resource after installation.
 
-## Ox Inventory Item Setup
+## Ox Inventory Items
 
-Add these items to your `@ox_inventory/data/items.lua` file:
+Add these entries to `ox_inventory/data/items.lua`:
 
 ```lua
--- Equipment
-['makeup_station'] = {
-    label = 'Makeup Station',
+["console_workbench"] = {
+    label = "Console Workbench",
     weight = 5000,
     stack = false,
     close = true,
-    description = 'A portable professional makeup station.'
+    description = "A portable workbench for assembling consoles."
 },
 
-['makeup_chair'] = {
-    label = 'Makeup Chair',
-    weight = 3000,
-    stack = false,
-    close = true,
-    description = 'A luxury chair for your studio.'
+["circuit_board"] = {
+    label = "Circuit Board",
+    weight = 100,
+    stack = true,
+    description = "A populated circuit board for console assembly."
 },
 
--- Materials
-['cosmetic_pigments'] = {
-    label = 'Cosmetic Pigments',
+["microchip"] = {
+    label = "Microchip",
     weight = 50,
     stack = true,
-    description = 'Fine pigments for professional makeup.'
+    description = "A high-performance console microchip."
 },
 
-['cream_base'] = {
-    label = 'Cream Base',
-    weight = 100,
+["copper_wire"] = {
+    label = "Copper Wire",
+    weight = 25,
     stack = true,
-    description = 'A smooth base for all cream products.'
+    description = "Insulated wiring for electronic builds."
 },
 
-['mixing_oils'] = {
-    label = 'Mixing Oils',
-    weight = 100,
-    stack = true,
-    description = 'High-grade oils for blending.'
-},
-
-['empty_container'] = {
-    label = 'Empty Container',
-    weight = 20,
-    stack = true,
-    description = 'A clean container for your products.'
-},
-
--- Finished Products
-['velvet_lipstick'] = {
-    label = 'Velvet Matte Lipstick',
-    weight = 100,
-    stack = true,
-    description = 'A high-quality matte finish lipstick.'
-},
-
-['rose_lipgloss'] = {
-    label = 'Rose Lip Gloss',
-    weight = 100,
-    stack = true,
-    description = 'Luxury high-shine lip gloss.'
-},
-
-['tinted_lipbalm'] = {
-    label = 'Tinted Lip Balm',
-    weight = 100,
-    stack = true,
-    description = 'Hydrating lip balm with a hint of color.'
-},
-
-['glow_foundation'] = {
-    label = 'Glow Foundation',
+["plastic_casing"] = {
+    label = "Plastic Casing",
     weight = 150,
     stack = true,
-    description = 'Radiant finish foundation.'
+    description = "A durable shell for a console device."
 },
 
-['silk_concealer'] = {
-    label = 'Silk Concealer',
-    weight = 120,
+["thermal_paste"] = {
+    label = "Thermal Paste",
+    weight = 20,
     stack = true,
-    description = 'Full coverage silk finish concealer.'
+    description = "Thermal compound for console cooling."
+},
+
+["handheld_console"] = {
+    label = "Handheld Console",
+    weight = 700,
+    stack = true,
+    description = "A compact portable gaming console."
+},
+
+["retro_console"] = {
+    label = "Retro Console",
+    weight = 1200,
+    stack = true,
+    description = "A classic console with modern internals."
+},
+
+["gaming_console"] = {
+    label = "Gaming Console",
+    weight = 1500,
+    stack = true,
+    description = "A powerful home gaming console."
+},
+
+["portable_console"] = {
+    label = "Portable Console",
+    weight = 900,
+    stack = true,
+    description = "A premium portable entertainment system."
+},
+
+["pro_console"] = {
+    label = "Pro Console",
+    weight = 1800,
+    stack = true,
+    description = "A high-end console built for serious players."
 },
 ```
 
+The resource uses the existing `money` ox_inventory item for shop purchases and sales payouts.
+
+## Commands
+
+- `/selltech`: Call a buyer after you have at least one sellable console.
+- `/stopselltech`: Dismiss the active buyer and end the current selling interaction.
+
 ## How to Use
 
-### Studio Shop
-1. Visit the **Glamour Studio Shop** (Blip visible to females only).
-2. Talk to the shop assistant to purchase materials and the **Makeup Station**.
-
-### Crafting
-1. Use the **Makeup Station** from your inventory to place it.
-2. Interact with the station to open the **Glamour Studio** interface.
-3. Select a product to craft. You must have the required materials.
-
-### Selling
-1. Stand near NPCs and use the command `/sellfemaleitems` (or your configured command).
-2. Approach an NPC and interact to offer them products.
-3. A selection UI will appear at the bottom. Choose the product you want to sell.
-4. The customer will make an offer. You can **Accept** or **Decline**.
+1. Visit the **Console Supply Shop** and buy components plus a **Console Workbench**.
+2. Use the workbench item from your inventory to place the existing table.
+3. Target the table and choose **Craft Consoles**.
+4. Select a console and choose the quantity. The required components are shown in the UI.
+5. Use `/selltech` to call a buyer, approach them, and target them with **Sell Goods**.
+6. Select a console, then accept or decline the customer offer.
 
 ## Configuration
-Edit `config/config.lua` to adjust:
-- Shop locations and Ped models.
-- Crafting recipes and durations.
-- Selling prices (min/max) and quantities.
-- Allowed NPC models for selling.
+
+Edit `config/config.lua` to change:
+
+- Shop location, shop ped, and blip.
+- Console component prices.
+- Console recipes and crafting durations.
+- Sell prices and buyer quantities.
+- NPC models that can arrive as buyers.
+- Selling cooldown.
+
+The table model remains `prop_table_03`, and the existing animation dictionaries are intentionally unchanged.

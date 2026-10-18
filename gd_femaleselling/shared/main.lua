@@ -1,1 +1,1 @@
-GdFemaleSelling = GdFemaleSelling or {}
+GdSellTech = GdSellTech or {}

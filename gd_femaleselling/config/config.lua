@@ -2,124 +2,131 @@ Config = {}
 Config.Debug = false
 
 -- The item name used in inventory to place the table
-Config.CraftingItem = "crafting_table"
+Config.CraftingItem = "console_workbench"
 
 -- Model used for the crafting table object
 Config.CraftingObject = "prop_table_03"
 
--- Shop Location (Where players can buy materials)
-Config.ShopLocation = vector3(-191.38, -370.03, 31.3) -- Example: Near a store or studio
+-- Shop location where players can buy console components
+Config.ShopLocation = vector3(-191.38, -370.03, 31.3)
 Config.ShopPed = {
     model = "s_f_y_shop_low",
-    coords = vector4(-191.38, -370.03, 31.3, 213.82) -- Adjust heading as needed
+    coords = vector4(-191.38, -370.03, 31.3, 213.82)
 }
 Config.UseBlip = true
 Config.ShopBlip = {
     sprite = 617,
     color = 48,
     scale = 0.8,
-    label = "Glamour Studio Shop"
+    label = "Console Supply Shop"
 }
 
--- Items available for purchase in the studio shop
+-- Items available for purchase in the console supply shop
 Config.ShopItems = {
     {
-        name = "cosmetic_pigments",
-        label = "Cosmetic Pigments",
+        name = "circuit_board",
+        label = "Circuit Board",
         price = 100,
-        description = "Fine pigments for professional makeup."
+        description = "A populated board for console assembly."
     },
     {
-        name = "cream_base",
-        label = "Cream Base",
-        price = 20,
-        description = "A smooth base for all cream products."
+        name = "microchip",
+        label = "Microchip",
+        price = 75,
+        description = "A high-performance console processor."
     },
     {
-        name = "mixing_oils",
-        label = "Mixing Oils",
+        name = "copper_wire",
+        label = "Copper Wire",
         price = 30,
-        description = "High-grade oils for blending."
+        description = "Insulated wiring for electronic builds."
     },
     {
-        name = "glass_bottle",
-        label = "Empty Cosmetic Container",
-        price = 10,
-        description = "A clean container for your products."
+        name = "plastic_casing",
+        label = "Plastic Casing",
+        price = 45,
+        description = "A durable shell for a console device."
     },
     {
-        name = "clothe_materials",
-        label = "Cloth",
-        price = 5,
-        description = "Cloth For Crafting"
+        name = "thermal_paste",
+        label = "Thermal Paste",
+        price = 20,
+        description = "Thermal compound for console cooling."
     },
     {
-        name = "crafting_table",
-        label = "Female Crafting Table",
+        name = "console_workbench",
+        label = "Console Workbench",
         price = 100,
-        description = "Your portable crafting station."
+        description = "Your portable console assembly station."
     }
 }
 
--- List of items that can be crafted
+-- List of console products that can be crafted
 Config.CraftableItems = {
     {
-        name = "velvet_lipstick",
-        label = "Velvet Matte Lipstick",
-        description = "UV Cosmetic Pigments, 2x Cream Base, 1x Mixing Oils",
+        name = "handheld_console",
+        label = "Handheld Console",
+        description = "1x Circuit Board, 1x Microchip, 1x Copper Wire, 1x Plastic Casing",
         ingredients = {
-            { item = "cosmetic_pigments", label = "Pigments", amount = 1 },
-            { item = "cream_base", label = "Cream Base", amount = 2 },
-            { item = "mixing_oils", label = "Mixing Oils", amount = 1 }
+            { item = "circuit_board", label = "Circuit Board", amount = 1 },
+            { item = "microchip", label = "Microchip", amount = 1 },
+            { item = "copper_wire", label = "Copper Wire", amount = 1 },
+            { item = "plastic_casing", label = "Plastic Casing", amount = 1 }
         },
         craftTime = 5000
     },
     {
-        name = "rose_lipgloss",
-        label = "Rose Lip Gloss",
-        description = "UV Cosmetic Pigments, 1x Cream Base, 1x Mixing Oils",
+        name = "retro_console",
+        label = "Retro Console",
+        description = "1x Circuit Board, 1x Microchip, 2x Copper Wire, 1x Plastic Casing",
         ingredients = {
-            { item = "cosmetic_pigments", label = "Pigments", amount = 1 },
-            { item = "cream_base", label = "Cream Base", amount = 1 },
-            { item = "mixing_oils", label = "Mixing Oils", amount = 1 }
+            { item = "circuit_board", label = "Circuit Board", amount = 1 },
+            { item = "microchip", label = "Microchip", amount = 1 },
+            { item = "copper_wire", label = "Copper Wire", amount = 2 },
+            { item = "plastic_casing", label = "Plastic Casing", amount = 1 }
         },
         craftTime = 6000
     },
     {
-        name = "tinted_lipbalm",
-        label = "Tinted Lip Balm",
-        description = "2x Cream Base, 1x Mixing Oils",
+        name = "gaming_console",
+        label = "Gaming Console",
+        description = "2x Circuit Board, 2x Microchip, 2x Copper Wire, 1x Thermal Paste",
         ingredients = {
-            { item = "cream_base", label = "Cream Base", amount = 2 },
-            { item = "mixing_oils", label = "Mixing Oils", amount = 1 }
-        },
-        craftTime = 4000
-    },
-    {
-        name = "glow_foundation",
-        label = "Glow Foundation",
-        description = "UV Cosmetic Pigments, 2x Cream Base, 1x Mixing Oils",
-        ingredients = {
-            { item = "cosmetic_pigments", label = "Pigments", amount = 1 },
-            { item = "cream_base", label = "Cream Base", amount = 2 },
-            { item = "mixing_oils", label = "Mixing Oils", amount = 1 }
+            { item = "circuit_board", label = "Circuit Board", amount = 2 },
+            { item = "microchip", label = "Microchip", amount = 2 },
+            { item = "copper_wire", label = "Copper Wire", amount = 2 },
+            { item = "thermal_paste", label = "Thermal Paste", amount = 1 }
         },
         craftTime = 8000
     },
     {
-        name = "silk_concealer",
-        label = "Silk Concealer",
-        description = "UV Cosmetic Pigments, 2x Cream Base, 1x Mixing Oils",
+        name = "portable_console",
+        label = "Portable Console",
+        description = "1x Circuit Board, 2x Microchip, 1x Copper Wire, 1x Plastic Casing",
         ingredients = {
-            { item = "cosmetic_pigments", label = "Pigments", amount = 1 },
-            { item = "cream_base", label = "Cream Base", amount = 2 },
-            { item = "mixing_oils", label = "Mixing Oils", amount = 1 }
+            { item = "circuit_board", label = "Circuit Board", amount = 1 },
+            { item = "microchip", label = "Microchip", amount = 2 },
+            { item = "copper_wire", label = "Copper Wire", amount = 1 },
+            { item = "plastic_casing", label = "Plastic Casing", amount = 1 }
         },
         craftTime = 7000
+    },
+    {
+        name = "pro_console",
+        label = "Pro Console",
+        description = "2x Circuit Board, 2x Microchip, 3x Copper Wire, 1x Plastic Casing, 1x Thermal Paste",
+        ingredients = {
+            { item = "circuit_board", label = "Circuit Board", amount = 2 },
+            { item = "microchip", label = "Microchip", amount = 2 },
+            { item = "copper_wire", label = "Copper Wire", amount = 3 },
+            { item = "plastic_casing", label = "Plastic Casing", amount = 1 },
+            { item = "thermal_paste", label = "Thermal Paste", amount = 1 }
+        },
+        craftTime = 9000
     }
 }
 
--- Selling Configuration (End-consumer buyers)
+-- NPC models that can buy console products
 Config.SellerModels = {
     "ig_abigail", "csb_abigail", "u_m_y_abner", "a_m_m_afriamer_01", "ig_mp_agent14",
     "csb_mp_agent14", "csb_agent", "s_f_y_airhostess_01", "s_m_y_airworker", "u_m_m_aldinapoli",
@@ -134,11 +141,11 @@ Config.SellerModels = {
 }
 
 Config.SellItems = {
-    ["velvet_lipstick"] = { priceMin = 45, priceMax = 50, buyAmountMin = 1, buyAmountMax = 5 },
-    ["rose_lipgloss"] = { priceMin = 60, priceMax = 75, buyAmountMin = 1, buyAmountMax = 4 },
-    ["tinted_lipbalm"] = { priceMin = 35, priceMax = 45, buyAmountMin = 1, buyAmountMax = 6 },
-    ["glow_foundation"] = { priceMin = 25, priceMax = 40, buyAmountMin = 1, buyAmountMax = 3 },
-    ["silk_concealer"] = { priceMin = 50, priceMax = 60, buyAmountMin = 1, buyAmountMax = 3 }
+    ["handheld_console"] = { priceMin = 120, priceMax = 150, buyAmountMin = 1, buyAmountMax = 5 },
+    ["retro_console"] = { priceMin = 180, priceMax = 225, buyAmountMin = 1, buyAmountMax = 4 },
+    ["gaming_console"] = { priceMin = 260, priceMax = 320, buyAmountMin = 1, buyAmountMax = 3 },
+    ["portable_console"] = { priceMin = 220, priceMax = 280, buyAmountMin = 1, buyAmountMax = 3 },
+    ["pro_console"] = { priceMin = 350, priceMax = 425, buyAmountMin = 1, buyAmountMax = 3 }
 }
 
-Config.SellCooldown = 10000 -- 10 Seconds By Default
+Config.SellCooldown = 10000 -- 10 seconds by default

@@ -1,21 +1,17 @@
-GdFemaleSelling = GdFemaleSelling or {}
-GdFemaleSelling.activeSeller = nil
-GdFemaleSelling.lastSellTime = 0
-GdFemaleSelling.isCalling = false
+GdSellTech = GdSellTech or {}
+GdSellTech.activeSellTech = nil
+GdSellTech.lastSellTime = 0
+GdSellTech.isCalling = false
 
 -- Debug Logger
-function GdFemaleSelling.debugLog(msg)
+function GdSellTech.debugLog(msg)
     if Config.Debug then
-        print("^5[FemaleCrafting Debug]^7 " .. tostring(msg))
+        print("^5[SellTech Debug]^7 " .. tostring(msg))
     end
 end
 
--- Check if player is female (Specifically mp_f_freemode_01)
-function GdFemaleSelling.isFemale()
-    local ped = PlayerPedId()
-    local model = GetEntityModel(ped)
-    local isFemalePed = model == joaat("mp_f_freemode_01")
-    GdFemaleSelling.debugLog("Gender check (mp_f_freemode_01): " .. tostring(isFemalePed))
-    return isFemalePed
+-- Kept as a compatibility helper for existing interaction checks; every player model is allowed.
+function GdSellTech.isFemale()
+    return true
 end
 

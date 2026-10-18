@@ -6,17 +6,17 @@
     <link rel="stylesheet" href="tailwind.css">
     <link href="https://api.fontshare.com/v2/css?family=clash-display@400;600;700&family=satoshi@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <title>Glamour Studio</title>
+    <title>SellTech</title>
 </head>
-<body class="bg-transparent w-screen h-screen flex items-center justify-center opacity-0 transition-all duration-500 pointer-events-none font-['satoshi'] text-glamour-dark">
+<body class="bg-transparent w-screen h-screen flex items-center justify-center opacity-0 transition-all duration-500 pointer-events-none font-['satoshi'] text-console-dark">
     
-    <!-- Main Studio Container -->
-    <div id="app" class="hidden w-[1100px] h-[820px] bg-glamour-light rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden relative">
+    <!-- Main SellTech Container -->
+    <div id="app" class="hidden w-[1100px] h-[820px] bg-console-light rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden relative">
         
         <!-- Header Area -->
         <header class="h-64 bg-white/30 relative flex flex-col items-center justify-center">
             <!-- Close Button -->
-            <button onclick="closeUI()" class="absolute top-8 right-10 w-10 h-10 rounded-full bg-white/50 flex items-center justify-center text-glamour-dark/40 hover:bg-white hover:text-glamour-dark transition-all z-20">
+            <button onclick="closeUI()" class="absolute top-8 right-10 w-10 h-10 rounded-full bg-white/50 flex items-center justify-center text-console-dark/40 hover:bg-white hover:text-console-dark transition-all z-20">
                 <span class="text-2xl">&times;</span>
             </button>
 
@@ -30,13 +30,13 @@
 
             <!-- Logo (Basic Font) -->
             <div class="relative flex flex-col items-center z-10">
-                <h1 class="text-7xl font-black tracking-tight text-glamour-dark uppercase italic">
-                    Glamour
+                <h1 class="text-7xl font-black tracking-tight text-console-dark uppercase italic">
+                    SellTech
                 </h1>
-                <div class="bg-glamour-pink px-8 py-1 rounded-lg mt-2 transform rotate-[-2deg]">
-                    <span class="text-xl font-black text-white uppercase tracking-widest">Studio</span>
+                <div class="bg-console-pink px-8 py-1 rounded-lg mt-2 transform rotate-[-2deg]">
+                    <span class="text-xl font-black text-white uppercase tracking-widest">Tech</span>
                 </div>
-                <p id="header-subtitle" class="mt-6 text-[10px] font-black tracking-[0.4em] uppercase text-glamour-dark/40">Beauty Routine</p>
+                <p id="header-subtitle" class="mt-6 text-[10px] font-black tracking-[0.4em] uppercase text-console-dark/40">Console Workshop</p>
             </div>
         </header>
 
@@ -48,20 +48,20 @@
         <!-- Footer -->
         <footer class="h-20 px-12 flex items-center justify-between border-t border-white/20">
             <div class="flex items-center gap-4">
-                <div class="w-10 h-10 rounded-full bg-glamour-pink flex items-center justify-center text-white">
+                <div class="w-10 h-10 rounded-full bg-console-pink flex items-center justify-center text-white">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 118 0m-4 7v2a2 2 0 104 0v-2m-6 4h6m-6 0H6a2 2 0 00-2 2v2a2 2 0 01-2 2H2m2 0h2m0 0h2m0 0V7a4 4 0 118 0v4m-6 4h6"></path></svg>
                 </div>
-                <p class="text-xs font-bold text-glamour-dark/60 uppercase tracking-wider">Premium Cosmetic Studio</p>
+                <p class="text-xs font-bold text-console-dark/60 uppercase tracking-wider">Premium Console Workshop</p>
             </div>
-            <div class="text-[10px] font-black text-glamour-pink uppercase tracking-widest">© Female Selling V3</div>
+            <div class="text-[10px] font-black text-console-pink uppercase tracking-widest">© SellTech V3</div>
         </footer>
     </div>
 
     <!-- Selling Container -->
-    <div id="sell-app" class="hidden fixed bottom-10 left-1/2 -translate-x-1/2 w-[800px] h-[280px] bg-glamour-light rounded-[2rem] border-4 border-glamour-pink shadow-2xl flex flex-col p-8 overflow-hidden">
+    <div id="sell-app" class="hidden fixed bottom-10 left-1/2 -translate-x-1/2 w-[800px] h-[280px] bg-console-light rounded-[2rem] border-4 border-console-pink shadow-2xl flex flex-col p-8 overflow-hidden">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl text-glamour-pink font-black uppercase italic tracking-tighter">My Collection</h2>
-            <button onclick="closeUI()" class="text-glamour-dark/20 hover:text-glamour-pink transition-colors">
+            <h2 class="text-2xl text-console-pink font-black uppercase italic tracking-tighter">My Collection</h2>
+            <button onclick="closeUI()" class="text-console-dark/20 hover:text-console-pink transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
@@ -71,28 +71,28 @@
     </div>
 
     <!-- Offer Container -->
-    <div id="offer-app" class="hidden fixed bottom-10 left-1/2 -translate-x-1/2 w-[900px] bg-glamour-light rounded-[2rem] border-4 border-glamour-pink shadow-2xl flex items-center p-8 gap-8 animate-fade-in">
+    <div id="offer-app" class="hidden fixed bottom-10 left-1/2 -translate-x-1/2 w-[900px] bg-console-light rounded-[2rem] border-4 border-console-pink shadow-2xl flex items-center p-8 gap-8 animate-fade-in">
         <div class="flex items-center gap-6 flex-1">
-            <div class="w-16 h-16 rounded-2xl bg-white/30 flex items-center justify-center text-glamour-pink">
+            <div class="w-16 h-16 rounded-2xl bg-white/30 flex items-center justify-center text-console-pink">
                 <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
             </div>
             <div>
-                <h3 class="text-glamour-dark font-black text-xl uppercase italic">Customer Offer</h3>
-                <p id="offer-status" class="text-glamour-dark/40 text-[10px] font-bold uppercase tracking-widest mt-1">Inspecting items...</p>
-                <p id="offer-count" class="text-glamour-pink text-[10px] font-black uppercase mt-0.5"></p>
+                <h3 class="text-console-dark font-black text-xl uppercase italic">Customer Offer</h3>
+                <p id="offer-status" class="text-console-dark/40 text-[10px] font-bold uppercase tracking-widest mt-1">Inspecting items...</p>
+                <p id="offer-count" class="text-console-pink text-[10px] font-black uppercase mt-0.5"></p>
             </div>
         </div>
 
         <div class="px-8 border-x border-white/20 flex flex-col justify-center">
-            <p class="text-[10px] font-black text-glamour-dark/30 uppercase tracking-widest mb-1">Total Price</p>
+            <p class="text-[10px] font-black text-console-dark/30 uppercase tracking-widest mb-1">Total Price</p>
             <div class="flex items-center gap-1">
-                <span class="text-glamour-pink font-black text-4xl">$</span>
-                <span id="offer-price" class="text-glamour-dark font-black text-4xl">0</span>
+                <span class="text-console-pink font-black text-4xl">$</span>
+                <span id="offer-price" class="text-console-dark font-black text-4xl">0</span>
             </div>
         </div>
 
         <div class="flex items-center gap-3">
-            <button onclick="acceptOffer()" class="bg-glamour-pink hover:bg-[#d81b60] px-8 py-4 rounded-xl text-white transition-all transform hover:scale-105 active:scale-95 flex items-center gap-3">
+            <button onclick="acceptOffer()" class="bg-console-pink hover:bg-[#d81b60] px-8 py-4 rounded-xl text-white transition-all transform hover:scale-105 active:scale-95 flex items-center gap-3">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                 <span class="font-black text-xs uppercase tracking-widest">Accept $<span id="accept-price">0</span></span>
             </button>

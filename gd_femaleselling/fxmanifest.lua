@@ -3,8 +3,8 @@ game "gta5"
 lua54 "yes"
 
 author "SwisserAI"
-description "Cali Stories Female Selling V2 - Generated with SwisserAI - https://ai.swisser.dev"
-version "1.0.1"
+description "SellTech Console Crafting and Selling - Generated with SwisserAI - https://ai.swisser.dev"
+version "1.0.2"
 
 dependencies {
     "ox_lib",

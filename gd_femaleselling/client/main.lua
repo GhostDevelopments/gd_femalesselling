@@ -5,12 +5,6 @@ RegisterNUICallback("close", function(_, cb)
 end)
 
 RegisterNUICallback("craftItem", function(data, cb)
-    if not GdFemaleSelling.isFemale() then
-        print("Only females can craft these items!")
-        cb("error")
-        return
-    end
-    
     local craftData = nil
     for _, v in ipairs(Config.CraftableItems) do
         if v.name == data.itemName then
@@ -41,9 +35,9 @@ RegisterNUICallback("craftItem", function(data, cb)
                 flag = 1
             }
         }) then
-            TriggerServerEvent("femalecraft:server:craft", data.itemName, amount)
+            TriggerServerEvent("selltech:server:craft", data.itemName, amount)
         else
-            GdFemaleSelling.openCraftingMenu()
+            GdSellTech.openCraftingMenu()
         end
         RemoveAnimDict("mini@repair")
     end
@@ -51,12 +45,7 @@ RegisterNUICallback("craftItem", function(data, cb)
 end)
 
 -- Open UI
-function GdFemaleSelling.openCraftingMenu()
-    if not GdFemaleSelling.isFemale() then
-        GdFemaleSelling.debugLog("Male ped attempted to open female-only menu.")
-        return
-    end
-    
+function GdSellTech.openCraftingMenu()
     SetNuiFocus(true, true)
     SendNUIMessage({
         action = "open",

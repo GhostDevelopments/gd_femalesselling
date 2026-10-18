@@ -3,10 +3,8 @@ local shopBlip = nil
 local shopPed = nil
 
 -- Update shop blip visibility based on gender
-function GdFemaleSelling.updateShopBlip()
-    local isFemalePed = GdFemaleSelling.isFemale()
-    
-    if isFemalePed and not shopBlip and Config.UseBlip then
+function GdSellTech.updateShopBlip()
+    if not shopBlip and Config.UseBlip then
         shopBlip = AddBlipForCoord(Config.ShopLocation)
         SetBlipSprite(shopBlip, Config.ShopBlip.sprite)
         SetBlipDisplay(shopBlip, 4)
@@ -16,11 +14,7 @@ function GdFemaleSelling.updateShopBlip()
         BeginTextCommandSetBlipName("STRING")
         AddTextComponentString(Config.ShopBlip.label)
         EndTextCommandSetBlipName(shopBlip)
-        GdFemaleSelling.debugLog("Shop blip created (Female only)")
-    elseif not isFemalePed and shopBlip then
-        RemoveBlip(shopBlip)
-        shopBlip = nil
-        GdFemaleSelling.debugLog("Shop blip removed (Not female)")
+        GdSellTech.debugLog("Shop blip created")
     end
 end
 
@@ -46,7 +40,7 @@ RegisterNUICallback("buyItem", function(data, cb)
     end
 
     if itemData then
-        TriggerServerEvent("femalecraft:server:buyItem", itemName, amount)
+        TriggerServerEvent("selltech:server:buyItem", itemName, amount)
     end
     cb("ok")
 end)
@@ -69,14 +63,14 @@ CreateThread(function()
             
             exports.ox_target:addLocalEntity(shopPed, {
                 {
-                    name = "glamour_shop",
+                    name = "selltech_shop",
                     icon = "fa-solid fa-store",
-                    label = "Open Glamour Studio Shop",
+                    label = "Open Console Supply Shop",
                     onSelect = function()
                         openShopMenu()
                     end,
                     canInteract = function()
-                        return GdFemaleSelling.isFemale()
+                        return true
                     end
                 }
             })
@@ -94,7 +88,7 @@ end)
 -- Monitor model changes for blip visibility
 CreateThread(function()
     while true do
-        GdFemaleSelling.updateShopBlip()
+        GdSellTech.updateShopBlip()
         Wait(5000) -- Check every 5 seconds
     end
 end)
