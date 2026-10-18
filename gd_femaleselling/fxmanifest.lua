@@ -1,26 +1,42 @@
-fx_version 'cerulean'
-game 'gta5'
+fx_version "cerulean"
+game "gta5"
+lua54 "yes"
 
-author 'Ghost Developments'
-description 'Cali Stories Female Selling V2'
-version '1.0.0'
+author "SwisserAI"
+description "Cali Stories Female Selling V2 - Generated with SwisserAI - https://ai.swisser.dev"
+version "1.0.1"
 
-ui_page 'html/ui.html'
+dependencies {
+    "ox_lib",
+    "ox_target",
+    "ox_inventory"
+}
+
+ui_page "html/ui.html"
 
 files {
-    'html/ui.html',
-    'html/style.css',
-    'html/script.js'
+    "html/ui.html",
+    "html/style.css",
+    "html/script.js",
+    "html/tailwind.css"
+}
+
+shared_scripts {
+    "@ox_lib/init.lua",
+    "config/*.lua",
+    "shared/*.lua"
 }
 
 client_scripts {
-    '@ox_lib/init.lua',
-    'config.lua',
-    'client.lua'
+    "client/helper.lua",
+    "client/shop.lua",
+    "client/crafting.lua",
+    "client/seller.lua",
+    "client/main.lua"
 }
 
 server_scripts {
-    '@ox_lib/init.lua',
-    'config.lua',
-    'server.lua'
+    "@ox_lib/init.lua",
+    "config/*.lua",
+    "server/*.lua"
 }

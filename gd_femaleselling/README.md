@@ -127,7 +127,7 @@ Add these items to your `@ox_inventory/data/items.lua` file:
 4. The customer will make an offer. You can **Accept** or **Decline**.
 
 ## Configuration
-Edit `config.lua` to adjust:
+Edit `config/config.lua` to adjust:
 - Shop locations and Ped models.
 - Crafting recipes and durations.
 - Selling prices (min/max) and quantities.

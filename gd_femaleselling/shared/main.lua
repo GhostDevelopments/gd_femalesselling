@@ -1,0 +1,1 @@
+GdFemaleSelling = GdFemaleSelling or {}
